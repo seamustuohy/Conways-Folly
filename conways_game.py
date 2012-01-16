@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-# import pygame
-
+import random
 """
 Seamus Tuohy's multiplayer turn based re-interpretation of John Conway's Game of Life in Python.
 
@@ -24,65 +23,61 @@ along with this program. If not, see <http://www.gnu.org/licenses/>."""
 
 def main():
     """this causes the game_start to run with shell instead of pygame"""
-    game_start("shell_start")
+    players = shuffle_players(player_select())
+    board = game_size()
+    print players
     
-def game_start(interface = "visual_start"):
-    """ sets the basic game interface and functions.
-
-    If called from main(shell) game_ start gets player number and names and game size and passes them to shell_board function. If called any other way it starts visual_board function.
-    """
-    if interface == "visual_start": return visual_start()
-    else: shell_open()
-
-def shell_open():
+def player_select():
     print """Welcome to Conway's Game of Doom!
 \nBefore we start I need some things.\n"""
-    num_players = int(raw_input("how many ypeople are playing? "))
+    num_players = int(raw_input("how many people are playing? "))
     players = []
     for player in range(num_players):
         name = raw_input("What is player %s's name? " %int(player+1))
         players.append(name)
+    return players
+
+def game_size():
+    """creates empty board."""
+    columns  = rows = board_size()
+    board = new_board(columns, rows)
+    # creates tiles[rows[]] multi-dimensional array
+    for i in range(rows):
+        for j in range(columns):
+            board[i][j] = ' '
+    return board
+
+def board_size():
+    """Requests game size from user."""
     while True:
         print "Would you like a 'small', medium', or 'large' game?"
         game_size = raw_input()
         small = ["s","small"]
         medium = ["m", "medium"]
         large = ["l", "large"]
-        board = []
         if game_size in small:
-            for i in range(10):
-                board.append([' '] * 10)
-            return shell_board(board, players, 10)
+            board_size = 20
+            return board_size
         elif game_size in medium:
-            for i in range(15):
-                board.append([' '] * 15)
-            return shell_board(board, players, 15)
+            board_size = 30
+            return board_size
         elif game_size in large:
-            for i in range(20):
-                board.append([' '] * 20)
-            return shell_board(board, players, 20)
+            board_size = 40
+            return board_size
         else:
             print "please enter  small, medium, or large or, s, m, or l in lowercase letters"
 
-def visual_start():
-    """ the visual pygame interface"""
-    print "visual game started"
-
-#ADD Get Board Size and other settings from PYGAME INTERFACE
-
-def shell_board(board, players, game_size):
-    """ the command line interface"""
-
-    columns  = rows = game_size
-# creates tiles[rows[]] multi-dimensional array
+def new_board(columns, rows):
+    board = []
     for i in range(rows):
-        for j in range(columns):
-            board[i][j] = '[ ]'
-    print "Welcome to Conway's game of DOOM!\n\n"
-#TEST    board[4][5] = "[X]"
-#    print "+"  + ("-" * (rows - 2)) + "+"
-    for k in range(i):
-        print str(board[i]) + "\n\n"
+        board.append([" "] * int(columns))
+    return board
+
+def shuffle_players(players):
+    """randomly chooses first player and return's order"""
+    random.shuffle(players,random.random)
+    return players
+    
 
 def evolve():
     """ the evolution phase"""

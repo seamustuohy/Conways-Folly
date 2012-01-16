@@ -24,7 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>."""
 def main():
     """this causes the game_start to run with shell instead of pygame"""
     players = shuffle_players(player_select())
-    board = game_size()
+    board = game_size(board_size())
     print players
     
 def player_select():
@@ -37,14 +37,13 @@ def player_select():
         players.append(name)
     return players
 
-def game_size():
+def game_size(board_size):
     """creates empty board."""
-    columns  = rows = board_size()
-    board = new_board(columns, rows)
+    columns  = rows = board_size
     # creates tiles[rows[]] multi-dimensional array
+    board = []
     for i in range(rows):
-        for j in range(columns):
-            board[i][j] = ' '
+        board.append([" "] * int(columns))
     return board
 
 def board_size():
@@ -66,12 +65,6 @@ def board_size():
             return board_size
         else:
             print "please enter  small, medium, or large or, s, m, or l in lowercase letters"
-
-def new_board(columns, rows):
-    board = []
-    for i in range(rows):
-        board.append([" "] * int(columns))
-    return board
 
 def shuffle_players(players):
     """randomly chooses first player and return's order"""

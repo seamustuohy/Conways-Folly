@@ -24,59 +24,56 @@ along with this program. If not, see <http://www.gnu.org/licenses/>."""
 
 def main():
     """this causes the game_start to run with shell instead of pygame"""
-    game_start("shell_board")
+    game_start("shell_start")
     
-def game_start(interface = "visual_board"):
+def game_start(interface = "visual_start"):
     """ sets the basic game interface and functions.
 
     If called from main(shell) game_ start gets player number and names and game size and passes them to shell_board function. If called any other way it starts visual_board function.
     """
-    if interface == visual_board: visual_board()
-    else:
-        print """Welcome to Conway's Game of Doom!
-\nBefore we start I need some things.\n"""
-        num_players = int(raw_input("how many people are playing? "))
-        players = []
-        for player in range(num_players):
-            name = raw_input("What is player %s's name? " %int(player+1))
-            players.append(name)
-#TEST            print players
-        while True:
-            print "Would you like a 'small', medium', or 'large' game?"
-            game_size = raw_input()
-            small = ["s","small"]
-            medium = ["m", "medium"]
-            large = ["l", "large"]
-            board = []
-            if game_size in small:
-                for i in range(10):
-                    board.append([' '] * 10)
-                return shell_board(board, players, 10)
-            elif game_size in medium:
-                for i in range(15):
-                    board.append([' '] * 15)
-                return shell_board(board, players, 15)
-            elif game_size in large:
-                for i in range(20):
-                    board.append([' '] * 20)
-                return shell_board(board, players, 20)
-            else:
-                print "please enter  small, medium, or large or, s, m, or l in lowercase letters"
+    if interface == "visual_start": return visual_start()
+    else: shell_open()
 
-def visual_board():
+def shell_open():
+    print """Welcome to Conway's Game of Doom!
+\nBefore we start I need some things.\n"""
+    num_players = int(raw_input("how many ypeople are playing? "))
+    players = []
+    for player in range(num_players):
+        name = raw_input("What is player %s's name? " %int(player+1))
+        players.append(name)
+    while True:
+        print "Would you like a 'small', medium', or 'large' game?"
+        game_size = raw_input()
+        small = ["s","small"]
+        medium = ["m", "medium"]
+        large = ["l", "large"]
+        board = []
+        if game_size in small:
+            for i in range(10):
+                board.append([' '] * 10)
+            return shell_board(board, players, 10)
+        elif game_size in medium:
+            for i in range(15):
+                board.append([' '] * 15)
+            return shell_board(board, players, 15)
+        elif game_size in large:
+            for i in range(20):
+                board.append([' '] * 20)
+            return shell_board(board, players, 20)
+        else:
+            print "please enter  small, medium, or large or, s, m, or l in lowercase letters"
+
+def visual_start():
     """ the visual pygame interface"""
-#TEST    print "visual" 
-#TEST    print pygame.ver
-#ADD Get Board Size and other settings from PYGAME INTERFACE    
+    print "visual game started"
+
+#ADD Get Board Size and other settings from PYGAME INTERFACE
 
 def shell_board(board, players, game_size):
     """ the command line interface"""
-#TEST    print "shell"
-#TEST    print game_size
-#TEST    print players
+
     columns  = rows = game_size
-#TEST    print columns
-#TEST    print rows
 # creates tiles[rows[]] multi-dimensional array
     for i in range(rows):
         for j in range(columns):
@@ -84,8 +81,8 @@ def shell_board(board, players, game_size):
     print "Welcome to Conway's game of DOOM!\n\n"
 #TEST    board[4][5] = "[X]"
 #    print "+"  + ("-" * (rows - 2)) + "+"
-    for k in range(board):
-        print str(board[i][j]) + "\n\n"
+    for k in range(i):
+        print str(board[i]) + "\n\n"
 
 def evolve():
     """ the evolution phase"""

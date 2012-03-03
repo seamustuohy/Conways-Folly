@@ -5,17 +5,17 @@ import conway
 class board_tests(unittest.TestCase):
     def test_init(self):
         """creates board instance from conway and tests __init__'s against static versions"""
-        test_board = conway.board(5)
+        test_board = conway.game(5)
         static = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
-        self.assertEqual(static, test_board.aboard)
+        self.assertEqual(static, test_board.board)
     
     def test_build(self):
         """tests if board instance "build" function clears existing board on call"""
-        test001_board = conway.board(5)
-        test001_board.aboard[1][2] = 5
-        test001_board = conway.board(6)
+        test001_board = conway.game(5)
+        test001_board.board[1][2] = 5
+        test001_board = conway.game(6)
         static = [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
-        self.assertEqual(static, test001_board.aboard)
+        self.assertEqual(static, test001_board.board)
 
     def test_tile_change(self):
         """Tests that tile changer only allows legal replacements
@@ -24,18 +24,42 @@ class board_tests(unittest.TestCase):
         If tile empty ([0] or [{A-Z}0]) allow add any tile({A-Z or " "}{1 or 0}).
         If tile has active cell({A-Z}1) only remove tile ([0] or [{A-Z}0]).
         """
-        test002_board = conway.board(8)
-        test_tile = test002_board.aboard[2][2]
+        test002_board = conway.game(8)
+        test_tile = test002_board.board[2][2]
         test002_board.change_tile("A1", (2,2))
-        self.assertNotEqual(test_tile, test002_board.aboard[2][2]) 
+        self.assertNotEqual(test_tile, test002_board.board[2][2]) 
         test002_board.change_tile("B1", (2,2))
-        self.assertEqual("A1", test002_board.aboard[2][2])
+        self.assertEqual("A1", test002_board.board[2][2])
         test002_board.change_tile("A0", (2,2))
-        self.assertEqual("A0", test002_board.aboard[2][2])
+        self.assertEqual("A0", test002_board.board[2][2])
         test002_board.change_tile("0", (2,2))
-        self.assertEqual("0", test002_board.aboard[2][2])
+        self.assertEqual("0", test002_board.board[2][2])
 
-    def test_evolve(self):
+    def test_neighbors(self):
+        """passes various board positions to the get_neighbor function to test retreival and check for boundry issues."""
+        #Setup
+        neighbor_board = conway.game(10)
+        active_cells = ("A1":(2,2), "A0":(2,1), 0:(1,1), "C0":(2,3), "A1":(3,2), "B1":(3,1), 1:(3,3), "C1":(1,2), "B1":(1,3))
+        for x,y in active cells:
+            conway.change_tile(x,y)
+        # process a table that gets a single column of left side cut off.
+        side_neighborhood = conway.get_neighbors("A0", (2,1))
+        side_result = [0, 0, 0, 0, "B1"]
+        self.assertEqual(side_neighborhood, side_result)
+        # process a full table 
+        mid_neighborhood = conway.get_neighbors("A1", (2,2))
+        mid_result = [0, "C1", "B1", "A0", "C0", "B1", "A1", 1]
+        self.assertEqual(mid_neighborhood, mid_result)
+        # process a table that gets a single row of the top side cut off.
+        top_neighborhood = conway.get_neighbors("0", (1,1))
+        top_result = [0, 0, 0, 0, "C1"]
+        self.assertEqual(top_neighborhood, top_result)
+        # process a corner table with only 4 cells on the board.
+        tiny_neighborhood = conway.get_neighbors("0", (0,0))
+        tiny_result = [0, 0, 0,]
+        self.assertEqual(tiny_neighborhood, tiny_result)
+
+        #    def test_evolve(self):
         """tests that evolver correctly works in different scenerio's
 
         Scenerio's
@@ -56,7 +80,10 @@ class board_tests(unittest.TestCase):
             1NA = One neighbor of player A
             1NB = " " " player B
         """
-"""        blank_board = conway.board(10)
+
+
+
+        """        blank_board = conway.board(10)
         # single cell
         single_generic = single_player = blank_board
         single_generic.aboard[5][5] = 1 # die
@@ -156,11 +183,12 @@ class board_tests(unittest.TestCase):
         empty_generic_2NA_1NB = empty_player_2NA_1NB = blank_board
         empty_generic_2NA_2NB = empty_player_2NA_2NB = blank_board
         empty_generic_3NA = empty_player_3NA = blank_board
-"""        
-class history_tests(unittest.TestCase):
-    """tests the history function's"""
+"""
+        
+"""class history_tests(unittest.TestCase):
+    tests the history function's
     def test_history(self):
-        """Test history saver by changing and saving board and comparing"""
+        Test history saver by changing and saving board and comparing
         test003_board = conway.board(5)
         static = test003_board.static_board
         test003_hist = conway.history(static)
@@ -170,7 +198,7 @@ class history_tests(unittest.TestCase):
         print test003_hist.archive[0]
         print test003_hist.archive[1]
         self.assertNotEqual(test003_hist.archive[0], test003_hist.archive[1])
-        
+"""    
         
 if __name__ == "__main__":
     unittest.main()

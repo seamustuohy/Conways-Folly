@@ -1,0 +1,52 @@
+#! /usr/bin/env python
+import backend
+import pygame
+
+
+def test_board():
+    neighbor_board = backend.game(20)
+    active_cells = {"A1":(2,2), "A0":(2,1), 0:(1,1), "C0":(2,3), "A1":(3,2), "B1":(3,1), 1:(3,3), "C1":(1,2), "B1":(1,3)}
+    for (x, y) in active_cells.items():
+        neighbor_board.change_tile(x, y)
+    old_board = backend.game(20)
+    print "starting game"
+    draw_board(old_board.board, neighbor_board.board)
+
+
+def draw_board(self):
+	pygame.init()
+		"""draw conways board"""  
+    players = {"0":(0x000000), "1":(0xFFFFFF), "A":(0x8506A9), "B":(0xD8005F), "C":(0x87EA00), "D":(0xE5FB00)}
+    n = len(the_board[0])
+    surface_sz = 480
+    sq_sz = surface_sz // n
+    surface_sz = n * sq_sz
+    surface = pygame.display.set_mode((surface_sz, surface_sz))
+    cell_size = int(sq_sz / 2)
+    cell_offset = cell_size
+
+    while True:
+        
+        ev = pygame.event.poll()
+        if ev.type == pygame.QUIT:
+            break;
+        elif ( event.type == MOUSEBUTTONDOWN and
+               pygame.mouse.get_pressed()[0]):
+            click_check(pygame.mouse.get_pos()) 
+
+        for row_index,row in enumerate(the_board):
+            for col_index,cell in enumerate(row):
+                if old_board[row_index][col_index] != cell:
+                    the_square = (row_index * sq_sz, col_index * sq_sz, sq_sz, sq_sz)
+                    player_id = str(cell)[0]
+                    screenc = players[player_id]
+                    if int(str(cell)[-1]) == 1:
+                        pygame.draw.circle(surface, screenc, (row_index * sq_sz + cell_offset, col_index * sq_sz + cell_offset), cell_size)
+                    elif int(str(cell)[-1]) == 0:
+                        surface.fill(screenc, the_square)
+                    old_board[row_index][col_index] = cell
+        pygame.display.flip()
+        
+if __name__ == "__main__":
+    test_board()
+    

@@ -11,6 +11,7 @@ class gameplay:
         pygame.init()
         size = 40 #game board size
         self.evolver = 0
+        self.num_evolution = 1
         self.game = backend.game(size)
         self.old_game = backend.game(size)
         self.board = self.game.new_board(size)
@@ -58,7 +59,8 @@ class gameplay:
         self.current_player = self.player_list[i + 1]
         if self.current_player == "0":
             self.current_player = self.player_list[0]
-            self.evolver = self.turns
+            self.num_evolution *= 2
+            self.evolver = self.num_evolution
 
 
     def evolution(self):

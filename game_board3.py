@@ -87,20 +87,21 @@ class gameplay:
             
     def click_check(self, mouse_pos):
         """ take the (x,y) position of the mouse and checks where it is on the game board and assigns a cell accordingly"""
-        x,y = mouse_pos[0], mouse_pos[1]
-        row = x / self.sq_sz
-        col = y / self.sq_sz
-        if (row, col) in self.temp_cells:
-            temp_temp = []
-            for i in self.temp_cells:
-                if i != (row, col):
-                    temp_temp.append((row, col))
-            self.temp_cells = temp_temp
-        elif str(self.board[row][col])[-1] == 1:
-            notification("on_board")
-        elif self.game.super_neighbor(self.current_player, (row, col)) == True:
-            self.game.change_tile((row, col), (str(self.current_player) + "1"))
-            self.temp_cells.append((row, col))
+        if self.evolver <= 0:
+            x,y = mouse_pos[0], mouse_pos[1]
+            row = x / self.sq_sz
+            col = y / self.sq_sz
+            if (row, col) in self.temp_cells:
+                temp_temp = []
+                for i in self.temp_cells:
+                    if i != (row, col):
+                        temp_temp.append((row, col))
+                self.temp_cells = temp_temp
+            elif str(self.board[row][col])[-1] == 1:
+                notification("on_board")
+            elif self.game.super_neighbor(self.current_player, (row, col)) == True:
+                self.game.change_tile((row, col), (str(self.current_player) + "1"))
+                self.temp_cells.append((row, col))
     
     def draw_board(self):
         """draw conways board"""
